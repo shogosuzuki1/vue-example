@@ -13,12 +13,16 @@ import { ref } from "vue";
 
 const viewName = "Dashboard";
 
-const labels = ref<string[]>(["ONE", "TWO", "THREE", "FOUR", "FIVE"]);
-const data = ref<number[]>([
-  await db.users.where("rank").equals(RANK.ONE).count(),
-  await db.users.where("rank").equals(RANK.TWO).count(),
-  await db.users.where("rank").equals(RANK.THREE).count(),
-  await db.users.where("rank").equals(RANK.FOUR).count(),
-  await db.users.where("rank").equals(RANK.FIVE).count(),
-]);
+const labels = ref<string[]>([]);
+const data = ref<number[]>([]);
+for (const key of Object.keys(RANK)) {
+  await db.users
+    .where("rank")
+    .equals(RANK[key as keyof typeof RANK])
+    .count()
+    .then((count) => {
+      labels.value.push(key);
+      data.value.push(count);
+    });
+}
 </script>

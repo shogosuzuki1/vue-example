@@ -41,8 +41,18 @@ const chartOptions = {
 
 onMounted(() => {
   chartData.value = {
-    labels: props.labels,
-    datasets: [{ data: props.data }],
+    labels: props.labels.map(
+      (label) => label.charAt(0).toUpperCase() + label.slice(1).toLowerCase()
+    ),
+    datasets: [
+      {
+        label: "Rank",
+        data: props.data,
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
+      },
+    ],
   };
   loaded.value = true;
 });
